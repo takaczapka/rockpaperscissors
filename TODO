@@ -1,0 +1,15 @@
+SCALATRA
+* how to do a dependency injection
+* scalatra http endpoints testing
+
+ROCK PAPER SCISSORS
+* game should be served by a service layer
+* /game rest endpoint with either
+    * javascript one-page-app communicating with it,
+    * or html servlet
+
+
+
+
+NOTES:
+* am I building a web application or an API? /html vs REST

@@ -1,5 +1,11 @@
 # Rock paper scissors #
 
+A simple web app that has you choose "rock paper scissors" against the computer, and tells you who won.
+
+Requirements:
+
+App should keep track of all time scores. Web interface should display that information.
+
 ## Build & Run ##
 
 ```sh

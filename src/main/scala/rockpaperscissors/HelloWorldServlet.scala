@@ -6,7 +6,50 @@ import scalate.ScalateSupport
 import scala.util.Random
 import scala.xml.{Text, NodeSeq}
 
-class HelloWorldServlet extends RockPaperScissorsStack {
+class HelloWorldServlet(service: MagicService) extends RockPaperScissorsStack {
+
+  get("/game") {
+    contentType="text/html"
+    html()
+  }
+
+  post("/game") {
+    val computer = Random.nextInt(3)
+    val me = params("choice").toInt
+    val res = if (computer == me) {
+      "Draw"
+    } else {
+      if (computer + 1 == me) {
+        "You won"
+      } else {
+        "Computer won"
+      }
+    }
+
+    contentType="text/html"
+
+    html(<h3>
+      {res}
+    </h3> <h4>
+      You:
+      {gameSymbols(me)}
+      vs Computer:
+      {gameSymbols(computer)}
+    </h4>)
+  }
+
+  object GameSymbol extends Enumeration {
+    type GameSymbol = Value
+
+    val Rock = Value
+    val Paper = Value
+    val Scissors = Value
+  }
+
+
+  import GameSymbol._
+
+  val gameSymbols = Seq(Rock, Paper, Scissors)
 
   def html(message: NodeSeq = NodeSeq.Empty) =
     <html lang="en">
@@ -34,46 +77,6 @@ class HelloWorldServlet extends RockPaperScissorsStack {
       </body>
     </html>
 
-
-  get("/game") {
-    html()
-  }
-
-  post("/game") {
-    val computer = Random.nextInt(3)
-    val me = params("choice").toInt
-    val res = if (computer == me) {
-      "Draw"
-    } else {
-      if (computer + 1 == me) {
-        "You won"
-      } else {
-        "Computer won"
-      }
-    }
-
-    html(<h3>
-      {res}
-    </h3> <h4>
-      You:
-      {gameSymbols(me)}
-      vs Computer:
-      {gameSymbols(computer)}
-    </h4>)
-  }
-
-  object GameSymbol extends Enumeration {
-    type GameSymbol = Value
-
-    val Rock = Value
-    val Paper = Value
-    val Scissors = Value
-  }
-
-
-  import GameSymbol._
-
-  val gameSymbols = Seq(Rock, Paper, Scissors)
 
   /*
   get("/") {
