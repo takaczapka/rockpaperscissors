@@ -1,0 +1,5 @@
+package rockpaperscissors
+
+class RootServlet {
+
+}

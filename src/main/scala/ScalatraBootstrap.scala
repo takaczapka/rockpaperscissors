@@ -1,4 +1,4 @@
-import rockpaperscissors.{RealMagicService, HelloWorldServlet}
+import rockpaperscissors.{RealMagicService, GameServlet}
 import org.scalatra._
 import javax.servlet.ServletContext
 
@@ -8,6 +8,6 @@ class ScalatraBootstrap extends LifeCycle {
 
     val magicService = new RealMagicService
 
-    context.mount(new HelloWorldServlet(magicService), "/*")
+    context.mount(new GameServlet(magicService), "/*")
   }
 }

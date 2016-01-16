@@ -6,7 +6,7 @@ import scalate.ScalateSupport
 import scala.util.Random
 import scala.xml.{Text, NodeSeq}
 
-class HelloWorldServlet(service: MagicService) extends RockPaperScissorsStack {
+class GameServlet(service: MagicService) extends RockPaperScissorsStack {
 
   get("/game") {
     contentType="text/html"
@@ -78,13 +78,8 @@ class HelloWorldServlet(service: MagicService) extends RockPaperScissorsStack {
     </html>
 
 
-  /*
+
   get("/") {
-    <html>
-      <body>
-        <h1>Hello, world!</h1>
-        Say <a href="hello-scalate">hello to Scalate</a>.
-      </body>
-    </html>
-  } */
+    redirect("/game")
+  }
 }
