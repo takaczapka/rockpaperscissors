@@ -1,6 +1,7 @@
-package rockpaperscissors
+package rockpaperscissors.web
 
 import org.scalatra.test.specs2._
+import rockpaperscissors.domain.GameService
 
 class GameServletSpec extends ScalatraSpec {
 
@@ -29,9 +30,7 @@ class GameServletSpec extends ScalatraSpec {
           return a correct page (something is selected) $gamePostChoiceMoreThan2
       """
 
-  addServlet(new GameServlet(new MagicService {
-    override def doTheMagic(): String = "boom"
-  }), "/*")
+  addServlet(new GameServlet(new GameService), "/*")
 
   private def root302 = get("/") {
     status must_== 302

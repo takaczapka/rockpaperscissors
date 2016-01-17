@@ -1,12 +1,11 @@
-package rockpaperscissors
+package rockpaperscissors.web
 
-import org.scalatra._
-import scalate.ScalateSupport
+import rockpaperscissors.RockPaperScissorsStack
+import rockpaperscissors.domain.{GameService, GameSymbol}
 
-import scala.util.Random
-import scala.xml.{Text, NodeSeq}
+import scala.xml.NodeSeq
 
-class GameServlet(service: MagicService) extends RockPaperScissorsStack {
+class GameServlet(gameService: GameService) extends RockPaperScissorsStack {
 
   get("/game") {
     contentType="text/html"
@@ -14,17 +13,11 @@ class GameServlet(service: MagicService) extends RockPaperScissorsStack {
   }
 
   post("/game") {
-    val computer = Random.nextInt(3)
-    val me = params("choice").toInt % 3
-    val res = if (computer == me) {
-      "Draw"
-    } else {
-      if (computer + 1 == me) {
-        "You won"
-      } else {
-        "Computer won"
-      }
-    }
+    val playerChoice = params("choice").toInt % 3
+
+    val result = gameService.play(GameSymbol(playerChoice))
+
+    val res = result.result.toString
 
     contentType="text/html"
 
@@ -32,24 +25,11 @@ class GameServlet(service: MagicService) extends RockPaperScissorsStack {
       {res}
     </h3> <h4>
       You:
-      {gameSymbols(me)}
+      {result.playerMove.toString}
       vs Computer:
-      {gameSymbols(computer)}
+      {result.computerMove.toString}
     </h4>)
   }
-
-  object GameSymbol extends Enumeration {
-    type GameSymbol = Value
-
-    val Rock = Value
-    val Paper = Value
-    val Scissors = Value
-  }
-
-
-  import GameSymbol._
-
-  val gameSymbols = Seq(Rock, Paper, Scissors)
 
   def html(message: NodeSeq = NodeSeq.Empty) =
     <html lang="en">
