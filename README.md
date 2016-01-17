@@ -1,5 +1,7 @@
 # Rock paper scissors #
 
+[![Build Status](https://travis-ci.org/takaczapka/rockpaperscissors.png)](https://travis-ci.org/takaczapka/rockpaperscissors)
+
 A simple web app that has you choose "rock paper scissors" against the computer, and tells you who won.
 
 Requirements:
