@@ -1,3 +1,7 @@
+* setup continous integration
+* fix breaking test
+
+
 SCALATRA
 * how to do a dependency injection
 * scalatra http endpoints testing
