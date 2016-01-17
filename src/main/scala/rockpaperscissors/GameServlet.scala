@@ -15,7 +15,7 @@ class GameServlet(service: MagicService) extends RockPaperScissorsStack {
 
   post("/game") {
     val computer = Random.nextInt(3)
-    val me = params("choice").toInt
+    val me = params("choice").toInt % 3
     val res = if (computer == me) {
       "Draw"
     } else {

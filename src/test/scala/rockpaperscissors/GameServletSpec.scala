@@ -19,13 +19,14 @@ class GameServletSpec extends ScalatraSpec {
           return content type of "text/html"     $gamePostContentType
           return content which contains
               words "Rock", "Paper",  "Scissors" $gamePostContent
-      POST /game with choice=1 should
+      POST /game with choice=0 should
           return "rock" selected                 $gamePostChoice0
-      POST /game with choice=2 should
+      POST /game with choice=1 should
           return "paper" selected                $gamePostChoice1
-      POST /game with choice=3 should
+      POST /game with choice=2 should
           return "scissors" selected             $gamePostChoice2
-
+      POST /game with choice > 2 should
+          return a correct page (something is selected) $gamePostChoiceMoreThan2
       """
 
   addServlet(new GameServlet(new MagicService {
@@ -83,6 +84,9 @@ class GameServletSpec extends ScalatraSpec {
     body.toLowerCase must containRegex("you:\\s*scissors")
   }
 
-  val containRegex = (regex: String) => beMatching("(?s).*" + regex + ".*")
+  private def gamePostChoiceMoreThan2 = post("/game", "choice" -> "5") {
+    body.toLowerCase must containRegex("you:\\s*[scissors|rock|papper]")
+  }
 
+  val containRegex = (regex: String) => beMatching("(?s).*" + regex + ".*")
 }
