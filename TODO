@@ -1,18 +1,8 @@
-* fix breaking test
-
-
-SCALATRA
-* how to do a dependency injection
-* scalatra http endpoints testing
-
 ROCK PAPER SCISSORS
-* game should be served by a service layer
-* /game rest endpoint with either
-    * javascript one-page-app communicating with it,
-    * or html servlet
-
-
-
+* introduce a in-memory historic results table
+* maybe move html code out of servlet
+* create a docker io distribution
+* deploy to AWS
 
 NOTES:
 * am I building a web application or an API? /html vs REST

@@ -4,7 +4,7 @@ import org.specs2.Specification
 import org.specs2.specification.core.SpecStructure
 import rockpaperscissors.domain.GameSymbol._
 
-import scala.util.Random
+import rockpaperscissors.domain.GameFixtures._
 
 class GameServiceSpec extends Specification {
   override def is: SpecStructure = s2"""
@@ -23,6 +23,4 @@ class GameServiceSpec extends Specification {
     val game = new Game()
     results.map { r => game.play(r.playerMove, r.computerMove) must_== r.result }
   }
-
-  private def anyGameSymbol = GameSymbol(Random.nextInt(3))
 }
