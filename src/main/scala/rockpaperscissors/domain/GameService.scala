@@ -12,10 +12,13 @@ class GameService(gameHistoryRepository: GameHistoryRepository) {
   val game = new Game()
 
   def play(playerMove: GameSymbol): Result = {
-
     val computerMove = GameSymbol(Random.nextInt(3))
     val gameResult = game.play(playerMove, computerMove)
-    Result(playerMove, computerMove, gameResult)
+
+    val result = Result(playerMove, computerMove, gameResult)
+    gameHistoryRepository.save(result)
+
+    result
   }
 
   def history() = gameHistoryRepository.list()

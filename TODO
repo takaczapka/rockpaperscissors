@@ -6,3 +6,11 @@ ROCK PAPER SCISSORS
 
 NOTES:
 * am I building a web application or an API? /html vs REST
+
+
+* Why I don't like Specs2
+    * in a suggested Specification style tests there is split between what's written in Spec and what's tested.
+    It's easy to forget to update the spec when updated expected assertions.
+    * I do miss OneInstancePerTest from ScalaTest - "isolated" doesn't seem to be working
+    * After/Before/Scope style annoying
+    * working with mocks as above
