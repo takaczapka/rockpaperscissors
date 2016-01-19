@@ -20,19 +20,19 @@ class GameSpec extends Specification {
 
   val game = new Game()
 
-  def paperWinsRock = game.play(Paper, Rock) must_== Won
+  private def paperWinsRock = game.play(Paper, Rock) must_== Won
 
-  def rockLosesPaper = game.play(Rock, Paper) must_== Lost
+  private def rockLosesPaper = game.play(Rock, Paper) must_== Lost
 
-  def scissorsWinPaper = game.play(Scissors, Paper) must_== Won
+  private def scissorsWinPaper = game.play(Scissors, Paper) must_== Won
 
-  def paperLosesScissors = game.play(Paper, Scissors) must_== Lost
+  private def paperLosesScissors = game.play(Paper, Scissors) must_== Lost
 
-  def rockWinsScissors = game.play(Rock, Scissors) must_== Won
+  private def rockWinsScissors = game.play(Rock, Scissors) must_== Won
 
-  def scissorsLoseRock = game.play(Scissors, Rock) must_== Lost
+  private def scissorsLoseRock = game.play(Scissors, Rock) must_== Lost
 
-  def draw = {
+  private def draw = {
     (game.play(Scissors, Scissors) must_== Draw) and
       (game.play(Rock, Rock) must_== Draw) and
       (game.play(Paper, Paper) must_== Draw)

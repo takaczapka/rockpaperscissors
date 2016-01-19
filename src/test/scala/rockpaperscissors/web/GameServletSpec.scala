@@ -19,7 +19,6 @@ class GameServletSpec extends ScalatraSpec {
           return content type of "text/html"     $gameGetContentType
           return content which contains
               words "Rock", "Paper",  "Scissors" $gameGetContent
-          return content with game history table $gameGetContainsHistoryTable
       POST /game with choice=0 to 2 should
           return status 200                      $gamePost200
           return content type of "text/html"     $gamePostContentType
@@ -94,14 +93,6 @@ class GameServletSpec extends ScalatraSpec {
     body.toLowerCase must containRegex("you:\\s*[scissors|rock|papper]")
   }
 
-  private def gameGetContainsHistoryTable = {
-    gameService.play(GameFixtures.anyGameSymbol)
-    get("/game") {
-      historyTableItems(body) must_== Seq.empty
-    }
-    ok
-  }
-
   private def gamePostUpdatesHistoryTable = {
     post("/game", "choice" -> "0") {
       historyTableItems(body)(0).head must_== "Rock"
@@ -121,7 +112,7 @@ class GameServletSpec extends ScalatraSpec {
     for {
       table <- html \\ "table"
       if (table \ "@id").text == "history"
-      tdTextSeq <- table \\ "tr" map { n: Node => (n \\ "td").map(_.text) }
+      tdTextSeq <- table \\ "tbody" \\ "tr" map { n: Node => (n \\ "td").map(_.text) }
     } yield tdTextSeq
   }
 

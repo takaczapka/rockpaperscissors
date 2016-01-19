@@ -17,18 +17,18 @@ class GameServiceSpec extends Specification with Mockito {
 
   val gameService = new GameService(mock[GameHistoryRepository])
 
-  def computerRandomMoves = {
+  private def computerRandomMoves = {
     val computerMoves = (1 to 100).map(_ => gameService.play(Paper).computerMove)
     computerMoves must contain(Rock, Paper, Scissors)
   }
 
-  def gameRulesAreFollowed = {
+  private def gameRulesAreFollowed = {
     val results = (1 to 100).map(_ => gameService.play(anyGameSymbol))
     val game = new Game()
     results.map { r => game.play(r.playerMove, r.computerMove) must_== r.result }
   }
 
-  def gameSessionSaved = {
+  private def gameSessionSaved = {
     val gameHistoryRepository = new InMemoryGameHistoryRepository
     val gameService = new GameService(gameHistoryRepository)
 
