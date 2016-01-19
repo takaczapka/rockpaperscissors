@@ -7,7 +7,7 @@ import scala.util.Random
 
 case class Result(playerMove: GameSymbol, computerMove: GameSymbol, result: GameResult)
 
-class GameService {
+class GameService(gameHistoryRepository: GameHistoryRepository) {
 
   val game = new Game()
 
@@ -17,4 +17,6 @@ class GameService {
     val gameResult = game.play(playerMove, computerMove)
     Result(playerMove, computerMove, gameResult)
   }
+
+  def history() = gameHistoryRepository.list()
 }
