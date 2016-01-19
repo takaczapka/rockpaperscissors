@@ -1,8 +1,9 @@
 ROCK PAPER SCISSORS
-* introduce a in-memory historic results table
+* specs2 expectation methods to be private
 * maybe move html code out of servlet
 * create a docker io distribution
 * deploy to AWS
+* use Mongo or other store for live results
 
 NOTES:
 * am I building a web application or an API? /html vs REST
@@ -14,3 +15,4 @@ NOTES:
     * I do miss OneInstancePerTest from ScalaTest - "isolated" doesn't seem to be working
     * After/Before/Scope style annoying
     * working with mocks as above
+    * better keep expectation methods private to keep track which are actually in use (as spec can change meantime)

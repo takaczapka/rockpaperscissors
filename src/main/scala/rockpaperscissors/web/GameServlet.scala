@@ -28,7 +28,19 @@ class GameServlet(gameService: GameService) extends RockPaperScissorsStack {
       {result.playerMove.toString}
       vs Computer:
       {result.computerMove.toString}
-    </h4>)
+    </h4>
+    <br/>
+      <h3>Game History</h3>
+      <table id="history" class="table table-striped .table-bordered .table-hover .table-condensed">
+        <thead>
+        <tr><th>Player</th><th>Computer</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+        {for (i <- gameService.history()) yield {
+          <tr><td>{i.playerMove}</td><td>{i.computerMove}</td><td>{i.result}</td></tr>
+        }}
+        </tbody>
+      </table>)
   }
 
   def html(message: NodeSeq = NodeSeq.Empty) =

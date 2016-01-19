@@ -1,7 +1,11 @@
 package rockpaperscissors.web
 
 import org.scalatra.test.specs2._
-import rockpaperscissors.domain.{InMemoryGameHistoryRepository, GameService}
+import org.specs2.Specification
+import org.specs2.specification.core.SpecStructure
+import rockpaperscissors.domain._
+
+import scala.xml.Node
 
 class GameServletSpec extends ScalatraSpec {
 
@@ -15,6 +19,7 @@ class GameServletSpec extends ScalatraSpec {
           return content type of "text/html"     $gameGetContentType
           return content which contains
               words "Rock", "Paper",  "Scissors" $gameGetContent
+          return content with game history table $gameGetContainsHistoryTable
       POST /game with choice=0 to 2 should
           return status 200                      $gamePost200
           return content type of "text/html"     $gamePostContentType
@@ -28,9 +33,11 @@ class GameServletSpec extends ScalatraSpec {
           return "scissors" selected             $gamePostChoice2
       POST /game with choice > 2 should
           return a correct page (something is selected) $gamePostChoiceMoreThan2
+      POST /game updated game history table      $gamePostUpdatesHistoryTable
       """
 
-  addServlet(new GameServlet(new GameService(new InMemoryGameHistoryRepository)), "/*")
+  val gameService = new GameService(new InMemoryGameHistoryRepository)
+  addServlet(new GameServlet(gameService), "/*")
 
   private def root302 = get("/") {
     status must_== 302
@@ -87,5 +94,62 @@ class GameServletSpec extends ScalatraSpec {
     body.toLowerCase must containRegex("you:\\s*[scissors|rock|papper]")
   }
 
+  private def gameGetContainsHistoryTable = {
+    gameService.play(GameFixtures.anyGameSymbol)
+    get("/game") {
+      historyTableItems(body) must_== Seq.empty
+    }
+    ok
+  }
+
+  private def gamePostUpdatesHistoryTable = {
+    post("/game", "choice" -> "0") {
+      historyTableItems(body)(0).head must_== "Rock"
+    }
+    post("/game", "choice" -> "1") {
+      historyTableItems(body)(0).head must_== "Paper"
+    }
+    post("/game", "choice" -> "0") {
+      historyTableItems(body)(0).head must_== "Rock"
+      historyTableItems(body)(1).head must_== "Paper"
+    }
+  }
+
+  private def historyTableItems(content: String): Seq[Seq[String]] = {
+    val html = scala.xml.XML.loadString(content)
+
+    for {
+      table <- html \\ "table"
+      if (table \ "@id").text == "history"
+      tdTextSeq <- table \\ "tr" map { n: Node => (n \\ "td").map(_.text) }
+    } yield tdTextSeq
+  }
+
   val containRegex = (regex: String) => beMatching("(?s).*" + regex + ".*")
+}
+
+
+class HtmlTableSpec extends Specification {
+  override def is: SpecStructure = s2"""whatever with table $tableEq"""
+
+  val html = <html><table id="history">
+    <tr><td>1</td><td>2</td><td>3</td></tr>
+    <tr><td>4</td><td>5</td><td>6</td></tr>
+    <tr><td>7</td><td>8</td><td>9</td></tr>
+  </table></html>
+
+  def attributeValueEquals(value: String)(node: Node) = {
+    node.attributes.exists(_.value.text == value)
+  }
+
+  def tableEq = {
+    val r = for {
+      table <- html \\ "table"
+      if (table \ "@id").text == "history"
+      tdTextSeq <- table \\ "tr" map { n: Node => (n \\ "td").map(_.text) }
+    } yield tdTextSeq
+
+    println(r)
+    ok
+  }
 }
